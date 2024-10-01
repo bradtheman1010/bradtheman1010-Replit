@@ -1,0 +1,23 @@
+import requests
+from bs4 import BeautifulSoup
+
+# Define the URL of the website you want to scrape
+url = "https://news.ycombinator.com/"
+
+# Send an HTTP request to the website and get the response
+response = requests.get(url)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    # Parse the HTML content of the webpage
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Find all elements that contain article titles
+    titles = soup.find_all('a', class_='storylink')
+    
+    # Print the titles of the articles
+    print("Latest articles on Hacker News:")
+    for i, title in enumerate(titles, start=1):
+        print(f"{i}. {title.get_text()}")
+else:
+    print(f"Failed to retrieve the page. Status code: {response.status_code}")
